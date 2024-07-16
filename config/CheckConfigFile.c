@@ -4,7 +4,6 @@ int ExistsInConfig(const char *fname) {
   FILE *file;
   char path[1024];
 
-  // Construct the full path
   snprintf(path, sizeof(path), ".config/plush/%s", fname);
 
   if ((file = fopen(path, "r"))) {
@@ -14,4 +13,5 @@ int ExistsInConfig(const char *fname) {
   return 0;
 }
 
-
+void ApplyConfig() {
+}
