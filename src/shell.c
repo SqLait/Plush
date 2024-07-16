@@ -8,8 +8,8 @@
 #include "constants.h"
 
 
-void execute_command(char**);
-void change_directory(char*);
+void ExecuteCommand(char**);
+void ChangeDir(char*);
 
 void Loop() {
   char input[MAX_INPUT_SIZE];
@@ -34,17 +34,17 @@ void Loop() {
     // Check for built-in commands
     if (args[0] != NULL) {
       if (strcmp(args[0], "cd") == 0) {
-        change_directory(args[1]);
+        ChangeDir(args[1]);
       } else if (strcmp(args[0], "exit") == 0) {
         should_run = 0;
       } else {
-        execute_command(args);
+        ExecuteCommand(args);
       }
     }
   }
 }
 
-void execute_command(char **args) {
+void ExecuteCommand(char **args) {
   pid_t pid = fork();
   if (pid == 0) {
     // Child process
