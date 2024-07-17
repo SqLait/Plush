@@ -36,3 +36,8 @@ fast and powerfull it seems like a no brainer to use it in a shell that does not
 # IMPORTANT
 
 The shell will be in development for a long time. Contributions are welcome but don't expect a well working product in the near future.
+
+# How to customize?
+
+When first starting the shell you get prompted to create a config. Hit Y so you can start using lua to customize the behaviour of your shell.
+But that is not all. (NOTE: This behaviour will be changed in the future) if you create a prompt.lua file you can create your own prompt!

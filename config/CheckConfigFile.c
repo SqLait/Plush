@@ -5,8 +5,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-static int ExistsInConfig(const char *fpath) {
-  FILE *file;
+int ExistsInConfig(const char* fpath) {
+  FILE* file;
   if ((file = fopen(fpath, "r"))) {
     fclose(file);
     return 1; // File exists
@@ -15,9 +15,9 @@ static int ExistsInConfig(const char *fpath) {
 }
 
 int CheckConfigStatus() {
-  char *homeDir = getenv("HOME") ? getenv("HOME") : ".";
-  const char *configDirName = ".config/plush";
-  const char *luaFile = "config.lua";
+  char* homeDir = getenv("HOME") ? getenv("HOME") : ".";
+  const char* configDirName = ".config/plush";
+  const char* luaFile = "config.lua";
 
   char configDirPath[256];
   snprintf(configDirPath, sizeof(configDirPath), "%s/%s", homeDir, configDirName);
@@ -51,7 +51,7 @@ int CheckConfigStatus() {
       }
 
       // Create config file
-      FILE *file = fopen(configFilePath, "w");
+      FILE* file = fopen(configFilePath, "w");
       if (file == NULL) {
         perror("fopen failed");
         return 1;
