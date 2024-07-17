@@ -61,7 +61,7 @@ void ExecuteCommand(char **args) {
   }
 }
 
-void change_directory(char *path) {
+void ChangeDir(char *path) {
   if (path == NULL) {
     fprintf(stderr, "my_shell: expected argument to \"cd\"\n");
   } else {

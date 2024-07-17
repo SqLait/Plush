@@ -1,52 +1,71 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <unistd.h>
 
-int ExistsInConfig(const char *fname) {
+static int ExistsInConfig(const char *fpath) {
   FILE *file;
-  char path[1024];
-
-  snprintf(path, sizeof(path), ".config/plush/%s", fname);
-
-  if ((file = fopen(path, "r"))) {
+  if ((file = fopen(fpath, "r"))) {
     fclose(file);
-    return 1;
+    return 1; // File exists
   }
-  return 0;
+  return 0; // File does not exist
 }
 
-void ApplyConfig() {
+int CheckConfigStatus() {
+  char *homeDir = getenv("HOME") ? getenv("HOME") : ".";
+  const char *configDirName = ".config/plush";
+  const char *luaFile = "config.lua";
 
-}
+  char configDirPath[256];
+  snprintf(configDirPath, sizeof(configDirPath), "%s/%s", homeDir, configDirName);
 
-int StartConfig() {
-  if (!ExistsInConfig("config.c") || !ExistsInConfig("config.lua")) {
+  char configFilePath[256];
+  snprintf(configFilePath, sizeof(configFilePath), "%s/%s", configDirPath, luaFile);
+
+  if (!ExistsInConfig(configFilePath)) {
     printf("No config file detected in ~/.config/plush.\n\nWould you like to generate one? [y/n]: ");
-    char opt = getchar();
+
+    char opt;
+    while (1) {
+      opt = getchar();
+      if (opt == 'y' || opt == 'n') {
+        // Clear the input buffer
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF);
+        break; // Exit the loop after valid input
+      }
+    }
+
     if (opt == 'y') {
-      if (mkdir("~/.config/plush", 700) != 0) {
-        return 1;
+      // Ensure directory exists
+      struct stat st;
+      if (stat(configDirPath, &st) == -1) {
+        printf("Creating directory %s...\n", configDirPath);
+        if (mkdir(configDirPath, 0700) != 0) {
+          perror("mkdir failed");
+          return 1;
+        }
       }
 
-      FILE *file = fopen("config.lua", "w");
+      // Create config file
+      FILE *file = fopen(configFilePath, "w");
       if (file == NULL) {
         perror("fopen failed");
         return 1;
       }
-      return 0;
-
-    } else if (opt == 'n'){
-      printf("\nConfig not created. Continue with built-in config.");
-      return 1;
-
+      fclose(file);
+      printf("Config file created successfully.\n");
     } else {
-      printf("\nDefaulted to N.");
+      printf("\nConfig not created. Continue with built-in config.\n");
       return 1;
     }
-  } else if (ExistsInConfig("config.c") || ExistsInConfig("config.lua")) {
-    ApplyConfig();
   } else {
-    perror("Config related issue. Can't find or init the file.");
+    printf("Config file detected in ~/.config/plush.\n");
   }
+
   return 0;
 }
+
