@@ -33,8 +33,8 @@ int ApplyInit(const char* path) {
       lua_pop(L, 1);  // Remove error message from the stack
     }
   } else {
-    printf("Function 'Prompt' not found or is not a function.\n");
-    lua_pop(L, 1);  // Remove the non-function value
+    strncpy(ps1, "Plush ~> ", sizeof(ps1) - 1);
+    ps1[sizeof(ps1) - 1] = '\0';
   }
 
   lua_close(L);
