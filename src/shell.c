@@ -7,7 +7,6 @@
 
 #include "constants.h"
 #include "../config/CheckConfigFile.h"
-#include "prompt.h"
 
 
 void ExecuteCommand(char**);
@@ -20,7 +19,7 @@ void Loop() {
   int should_run = 1;
 
   while (should_run) {
-    PrintShellPrompt();
+    printf("Plush ~> ");
     fgets(input, MAX_INPUT_SIZE, stdin);
 
     // Parse the input into tokens
