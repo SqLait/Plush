@@ -1,17 +1,15 @@
 #include <lua5.4/lua.h>
 #include <lua5.4/lualib.h>
 #include <lua5.4/lauxlib.h>
+#include <string.h>
 
 #include "CheckConfigFile.h"
+#include "ShellVars.h"
 
 /*Initializing config will be done here.*/
-
-char* ps1;
-int silenceInit = 1;
+char ps1[PROMPT_SIZE];
 
 int ApplyInit(const char* path) {
-  char* possibleReturns[] = {"Prompt", "Alias", "Syntax"};
-  int num_returns = sizeof(possibleReturns) / sizeof(possibleReturns[0]);
   lua_State* L = luaL_newstate();
   luaL_openlibs(L);
 
@@ -21,11 +19,29 @@ int ApplyInit(const char* path) {
     return 1;
   }
 
-  for (int i = 0; i < num_returns; i++) {
-    lua_getglobal(L, possibleReturns[i]);
-    lua_pcall(L, 0, 0, 0);
+  lua_getglobal(L, "Prompt");  // Push the function onto the stack
+  if (lua_isfunction(L, -1)) {
+    if (lua_pcall(L, 0, 1, 0) == LUA_OK) {
+      const char* temp = lua_tostring(L, -1);
+      if (temp) {
+        strncpy(ps1, temp, sizeof(ps1) - 1);
+        ps1[sizeof(ps1) - 1] = '\0';
+      }
+      lua_pop(L, 1);  // Remove the result from the stack
+    } else {
+      printf("Error running function 'Prompt': %s\n", lua_tostring(L, -1));
+      lua_pop(L, 1);  // Remove error message from the stack
+    }
+  } else {
+    printf("Function 'Prompt' not found or is not a function.\n");
+    lua_pop(L, 1);  // Remove the non-function value
   }
 
   lua_close(L);
   return 0;
+}
+
+
+void PrintPs1() {
+  printf("%s", ps1);
 }
