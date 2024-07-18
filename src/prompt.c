@@ -23,11 +23,11 @@ void PrintShellPrompt() {
   if (!ExistsInConfig(customPromptDir)) {
     customOrDefault = 1;
     SetDefaultPrompt(prompt, sizeof(prompt), defaultPromptDir);
-    printf("%s ~> ", prompt);
+    printf("%s ", prompt);
   } else {
     customOrDefault = 0;
     SetDefaultPrompt(prompt, sizeof(prompt), customPromptDir);
-    printf("%s ~> ", prompt);
+    printf("%s ", prompt);
   }
 }
 
@@ -45,7 +45,7 @@ static int SetDefaultPrompt(char* prompt, size_t promptSize, char* path) {
     lua_getglobal(L, "Prompt");
     lua_getfield(L, -1, "Default");
   } else {
-    lua_getglobal(L, "config");
+    lua_getglobal(L, "Config");
   }
   lua_pcall(L, 0, 1, 0);
 

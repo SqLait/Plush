@@ -4,7 +4,7 @@ Prompt.Default = function()
   local user = os.getenv("USER")
   local host = Prompt.get_hostname()
 
-  return user .. "@" .. host
+  return user .. "@" .. host .. " ~$ "
 end
 
 function Prompt.get_hostname()

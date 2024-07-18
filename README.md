@@ -40,4 +40,8 @@ The shell will be in development for a long time. Contributions are welcome but 
 # How to customize?
 
 When first starting the shell you get prompted to create a config. Hit Y so you can start using lua to customize the behaviour of your shell.
-But that is not all. (NOTE: This behaviour will be changed in the future) if you create a prompt.lua file you can create your own prompt!
+But that is not all. if you create a prompt.lua file you can create your own prompt!
+
+NOTE: In the future this behaviour will change. I am currently working on implementing a init.lua file that will run all your configs in the shell.
+This will also creatly improve the performance of the shell instead of having one lua runtime per script, since now it will use one per shell.
+You will probably have to use special variables in order to change things like the prompt.

@@ -5,6 +5,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#include "ApplyInit.h"
+
 int ExistsInConfig(const char* fpath) {
   FILE* file;
   if ((file = fopen(fpath, "r"))) {
@@ -17,7 +19,7 @@ int ExistsInConfig(const char* fpath) {
 int CheckConfigStatus() {
   char* homeDir = getenv("HOME") ? getenv("HOME") : ".";
   const char* configDirName = ".config/plush";
-  const char* luaFile = "config.lua";
+  const char* luaFile = "init.lua";
 
   char configDirPath[256];
   snprintf(configDirPath, sizeof(configDirPath), "%s/%s", homeDir, configDirName);
@@ -64,6 +66,7 @@ int CheckConfigStatus() {
     }
   } else {
     printf("Config file detected in ~/.config/plush.\n");
+    ApplyInit();
   }
 
   return 0;
