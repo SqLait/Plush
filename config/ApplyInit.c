@@ -4,7 +4,14 @@
 
 #include "CheckConfigFile.h"
 
+/*Initializing config will be done here.*/
+
+char* ps1;
+int silenceInit = 1;
+
 int ApplyInit(const char* path) {
+  char* possibleReturns[] = {"Prompt", "Alias", "Syntax"};
+  int num_returns = sizeof(possibleReturns) / sizeof(possibleReturns[0]);
   lua_State* L = luaL_newstate();
   luaL_openlibs(L);
 
@@ -14,8 +21,10 @@ int ApplyInit(const char* path) {
     return 1;
   }
 
-  lua_getglobal(L, "Config");
-  lua_pcall(L, 0, 0, 0);
+  for (int i = 0; i < num_returns; i++) {
+    lua_getglobal(L, possibleReturns[i]);
+    lua_pcall(L, 0, 0, 0);
+  }
 
   lua_close(L);
   return 0;
