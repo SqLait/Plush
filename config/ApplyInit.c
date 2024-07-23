@@ -4,14 +4,16 @@
 #include <string.h>
 
 #include "CheckConfigFile.h"
-#include "ShellVars.h"
+#include "ApplyInit.h"
 
 /*Initializing config will be done here.*/
 char ps1[PROMPT_SIZE];
 
-int ApplyInit(const char* path) {
+int ApplyInit() {
   lua_State* L = luaL_newstate();
   luaL_openlibs(L);
+
+  RegisterPlush(L);  // Register C functions
 
   if (luaL_loadfile(L, path) || lua_pcall(L, 0, 0, 0)) {
     printf("Cannot run init.lua: %s\n", lua_tostring(L, -1));
@@ -19,29 +21,22 @@ int ApplyInit(const char* path) {
     return 1;
   }
 
-  lua_getglobal(L, "Prompt");  // Push the function onto the stack
-  if (lua_isfunction(L, -1)) {
-    if (lua_pcall(L, 0, 1, 0) == LUA_OK) {
-      const char* temp = lua_tostring(L, -1);
-      if (temp) {
-        strncpy(ps1, temp, sizeof(ps1) - 1);
-        ps1[sizeof(ps1) - 1] = '\0';
-      }
-      lua_pop(L, 1);  // Remove the result from the stack
-    } else {
-      printf("Error running function 'Prompt': %s\n", lua_tostring(L, -1));
-      lua_pop(L, 1);  // Remove error message from the stack
-    }
-  } else {
-    strncpy(ps1, "Plush ~> ", sizeof(ps1) - 1);
-    ps1[sizeof(ps1) - 1] = '\0';
-  }
-
   lua_close(L);
   return 0;
 }
 
+int SetPrompt(lua_State* L) {
+  if (lua_isstring(L, 1)) {
+    const char* prompt = lua_tostring(L, 1);
+    strncpy(ps1, prompt, sizeof(ps1) - 1);
+  } else {
+    strncpy(ps1, "Plush ~> ", sizeof(ps1) - 1);
+  }
+  ps1[sizeof(ps1) - 1] = '\0';
+  return 0;
+}
 
-void PrintPs1() {
-  printf("%s", ps1);
+void RegisterPlush(lua_State* L) {
+  luaL_newlib(L, Plush);  // Create a new library
+  lua_setglobal(L, "Plush");  // Set the library as a global variable
 }

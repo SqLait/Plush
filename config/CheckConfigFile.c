@@ -1,3 +1,4 @@
+#include <linux/limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,6 +7,7 @@
 #include <unistd.h>
 
 #include "ApplyInit.h"
+char* path = NULL;
 
 int ExistsInConfig(const char* fpath) {
   FILE* file;
@@ -19,15 +21,18 @@ int ExistsInConfig(const char* fpath) {
 int CheckConfigStatus() {
   char* homeDir = getenv("HOME") ? getenv("HOME") : ".";
   const char* configDirName = ".config/plush";
-  const char* luaFile = "init.lua";
 
-  char configDirPath[256];
+  char configDirPath[PATH_MAX];
+  path = malloc(PATH_MAX);
+  if (path == NULL) {
+    perror("malloc failed");
+    return 1;
+  }
+
   snprintf(configDirPath, sizeof(configDirPath), "%s/%s", homeDir, configDirName);
+  snprintf(path, PATH_MAX, "%s/init.lua", configDirPath);
 
-  char configFilePath[256];
-  snprintf(configFilePath, sizeof(configFilePath), "%s/%s", configDirPath, luaFile);
-
-  if (!ExistsInConfig(configFilePath)) {
+  if (!ExistsInConfig(path)) {
     printf("No config file detected in ~/.config/plush.\n\nWould you like to generate one? [y/n]: ");
 
     char opt;
@@ -48,27 +53,31 @@ int CheckConfigStatus() {
         printf("Creating directory %s...\n", configDirPath);
         if (mkdir(configDirPath, 0700) != 0) {
           perror("mkdir failed");
+          free(path); // Free allocated memory
           return 1;
         }
       }
 
       // Create config file
-      FILE* file = fopen(configFilePath, "w");
+      FILE* file = fopen(path, "w");
       if (file == NULL) {
         perror("fopen failed");
+        free(path); // Free allocated memory
         return 1;
       }
       fclose(file);
       printf("Config file created successfully.\n");
     } else {
       printf("\nConfig not created. Continue with built-in config.\n");
+      free(path); // Free allocated memory
       return 1;
     }
   } else {
     printf("Config file detected in ~/.config/plush.\n");
-    ApplyInit(configFilePath);
+    ApplyInit();
   }
 
+  free(path); // Free allocated memory
   return 0;
 }
 

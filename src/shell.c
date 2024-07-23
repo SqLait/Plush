@@ -7,7 +7,7 @@
 
 #include "constants.h"
 #include "../config/CheckConfigFile.h"
-#include "../config/ShellVars.h"
+#include "../config/ApplyInit.h"
 
 
 void ExecuteCommand(char**);
@@ -20,12 +20,11 @@ void Loop() {
   int should_run = 1;
 
   while (should_run) {
-    PrintPs1();
-    fgets(input, MAX_INPUT_SIZE, stdin);
-
-    // Parse the input into tokens
+    printf("%s", ps1);
     int position = 0;
+    fgets(input, MAX_INPUT_SIZE, stdin);
     token = strtok(input, DELIM);
+
     while (token != NULL) {
       args[position] = token;
       position++;
