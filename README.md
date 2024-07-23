@@ -33,15 +33,21 @@ Because of this plush uses C for its backbone, The core utils for navigation, an
 Why lua? Lua is a very proven language that is used as a embedded language in game engine's, text editors. But not really in shells. And since lua is very
 fast and powerfull it seems like a no brainer to use it in a shell that does not want to sacrifice on performance.
 
-# IMPORTANT
-
-The shell will be in development for a long time. Contributions are welcome but don't expect a well working product in the near future.
-
 # How to customize?
 
-When first starting the shell you get prompted to create a config. Hit Y so you can start using lua to customize the behaviour of your shell.
-But that is not all. if you create a prompt.lua file you can create your own prompt!
+All customization can be done in the init.lua file.
 
-NOTE: In the future this behaviour will change. I am currently working on implementing a init.lua file that will run all your configs in the shell.
-This will also creatly improve the performance of the shell instead of having one lua runtime per script, since now it will use one per shell.
-You will probably have to use special variables in order to change things like the prompt.
+# TODO list for the future:
+
+## Shell
+* Functions:
+    - Pipe support
+    - History support
+    - Arrowkey navigation
+    - Implement zsh and fish features in Lua or C
+* Logic: 
+    - Rewrite of the C codebase
+    - More shell logic for lua
+* Documentation: 
+    - Add basic scripting help
+    - Create a wiki
