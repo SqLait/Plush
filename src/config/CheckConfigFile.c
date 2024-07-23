@@ -7,16 +7,9 @@
 #include <unistd.h>
 
 #include "ApplyInit.h"
-char* path = NULL;
+#include "ExistsInConfig.h"
 
-int ExistsInConfig(const char* fpath) {
-  FILE* file;
-  if ((file = fopen(fpath, "r"))) {
-    fclose(file);
-    return 1; // File exists
-  }
-  return 0; // File does not exist
-}
+char* path = NULL;
 
 int CheckConfigStatus() {
   char* homeDir = getenv("HOME") ? getenv("HOME") : ".";
@@ -76,8 +69,7 @@ int CheckConfigStatus() {
     printf("Config file detected in ~/.config/plush.\n");
     ApplyInit();
   }
-
-  free(path); // Free allocated memory
+  free(path);
   return 0;
 }
 

@@ -6,8 +6,8 @@
 #include <sys/wait.h>
 
 #include "constants.h"
-#include "config/CheckConfigFile.h"
 #include "config/ApplyInit.h"
+#include "history/History.h"
 
 
 void ExecuteCommand(char**);
@@ -23,6 +23,7 @@ void Loop() {
     printf("%s", ps1);
     int position = 0;
     fgets(input, MAX_INPUT_SIZE, stdin);
+    WriteInHistory(input);
     token = strtok(input, DELIM);
 
     while (token != NULL) {
