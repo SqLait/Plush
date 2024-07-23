@@ -1,5 +1,5 @@
 #include "shell.h"
-#include "../config/CheckConfigFile.h"
+#include "config/CheckConfigFile.h"
 
 int main() {
   CheckConfigStatus();

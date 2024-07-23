@@ -6,8 +6,8 @@
 #include <sys/wait.h>
 
 #include "constants.h"
-#include "../config/CheckConfigFile.h"
-#include "../config/ApplyInit.h"
+#include "config/CheckConfigFile.h"
+#include "config/ApplyInit.h"
 
 
 void ExecuteCommand(char**);
