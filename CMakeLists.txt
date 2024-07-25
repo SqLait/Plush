@@ -24,6 +24,8 @@ add_executable(main
     src/config/CheckConfigFile.c
     src/history/History.c
     src/config/ExistsInConfig.c
+    src/def-plugins/autocomplete/autocomplete.c
+    src/core-utils/ExposeCoreUtils.c
 )
 
 # Link libraries
