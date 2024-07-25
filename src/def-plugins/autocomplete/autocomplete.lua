@@ -1,7 +1,7 @@
 local home = os.getenv("HOME")
 local history_path = home .. "/.local/share/.plushhs"
 
-local function read_history(file_path)
+local ReadHistory = function(file_path)
   local history_table = {}
   local file, err = io.open(file_path, "r")
 
@@ -18,13 +18,31 @@ local function read_history(file_path)
   return history_table
 end
 
--- Use the function to read the history file
-local history = read_history(history_path)
+local SearchHistory = function(partialStr, history)
+  local best_match = nil
+  local best_score = 0
 
--- Print the contents of the table (optional)
-if history then
-  for i in pairs(history) do
-    print(history[i])
+  for _, word in ipairs(history) do
+    if word:sub(1, #partialStr) == partialStr then
+      local score = #partialStr
+      if score > best_score then
+        best_score = score
+        best_match = word
+      end
+    end
   end
+
+  return best_match
+end
+
+local history = ReadHistory(history_path)
+
+local partialStr = "no"
+local suggestion = SearchHistory(partialStr, history)
+
+if suggestion then
+  print("Suggestion:", suggestion)
+else
+  print("No suggestion found.")
 end
 
