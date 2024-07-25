@@ -6,7 +6,7 @@
 #include "History.h"
 #include "../config/ExistsInConfig.h"
 
-char* LocateHs() {
+char* GetFilePath(const char* destFile) {
   char* homeDir = getenv("HOME") ? getenv("HOME") : ".";
   const char* localDir = ".local/share";
 
@@ -21,14 +21,14 @@ char* LocateHs() {
   }
 
   snprintf(localShare, PATH_MAX, "%s/%s", homeDir, localDir);
-  snprintf(hsPath, PATH_MAX, "%s/.plushhs", localShare);
+  snprintf(hsPath, PATH_MAX, "%s/%s", localShare, destFile);
 
   free(localShare);
   return hsPath;
 }
 
 int CreateHistoryFile() {
-  char* hsPath = LocateHs();
+  char* hsPath = GetFilePath(".plushhs");
   if (hsPath == NULL) {
     return 1;
   }
@@ -48,7 +48,7 @@ int CreateHistoryFile() {
 }
 
 int WriteInHistory(const char* command) {
-  char* hsPath = LocateHs();
+  char* hsPath = GetFilePath(".plushhs");
   if (hsPath == NULL) {
     return 1;
   }
@@ -65,4 +65,26 @@ int WriteInHistory(const char* command) {
 
   free(hsPath);
   return 0;
+}
+
+char** ListHistory(const char* filePath) {
+  char** history = malloc(INIT_HS_SIZE * sizeof(char*));
+  char line[LINE_SIZE];
+  FILE* file = fopen(filePath, "r");
+
+  int allocatedHistorySize = INIT_HS_SIZE;
+  int i = 0;
+
+  while (fgets(line, LINE_SIZE, file)) {
+    if (i >= allocatedHistorySize) {
+      allocatedHistorySize *= 2;
+      history = realloc(history, allocatedHistorySize * sizeof(char*));
+    }
+    history[i] = malloc(strlen(line) + 1);
+    strcpy(history[i], line);
+    i++;
+  }
+
+  fclose(file);
+  return history;
 }

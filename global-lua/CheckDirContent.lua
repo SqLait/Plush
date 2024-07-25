@@ -1,24 +1,24 @@
-local function ends_with(str, ending)
+local function endsWith(str, ending)
     return ending == "" or str:sub(-#ending) == ending
 end
 
-local function get_lua_files(directory)
-    local lua_files = {}
+local function getLuaFiles(directory)
+    local luaFiles = {}
     -- Open a pipe to the `ls` command
     local p = io.popen('ls "' .. directory .. '"')
     if p then
         for file in p:lines() do
-            if ends_with(file, ".lua") then
-                table.insert(lua_files, directory .. '/' .. file)
+            if endsWith(file, ".lua") then
+                table.insert(luaFiles, directory .. '/' .. file)
             end
         end
         p:close()
     end
-    return lua_files
+    return luaFiles
 end
 
 local home = os.getenv("HOME")
 local dir = home .. "/.config/plush"
-LuaFiles = get_lua_files(dir)
+LuaFiles = getLuaFiles(dir)
 
 return LuaFiles
