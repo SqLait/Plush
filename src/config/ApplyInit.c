@@ -1,6 +1,6 @@
-#include <lua5.4/lua.h>
-#include <lua5.4/lualib.h>
-#include <lua5.4/lauxlib.h>
+#include <luajit-5_1-2.1/luajit.h>
+#include <luajit-5_1-2.1/lualib.h>
+#include <luajit-5_1-2.1/lauxlib.h>
 #include <string.h>
 
 #include "CheckConfigFile.h"

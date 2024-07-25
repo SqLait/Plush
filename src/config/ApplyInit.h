@@ -1,4 +1,6 @@
-#include <lua5.4/lauxlib.h>
+#include <luajit-5_1-2.1/luajit.h>
+#include <luajit-5_1-2.1/lualib.h>
+#include <luajit-5_1-2.1/lauxlib.h>
 
 #define APPLY_INIT_H
 #ifdef APPLY_INIT_H
