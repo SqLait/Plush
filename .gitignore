@@ -1,0 +1,11 @@
+# Build directory
+/build/
+
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+*.cmake
+
+# IDE specific files
+.vscode/
+.idea/
