@@ -1,3 +1,0 @@
-/home/tum/Projects/Plush/build/CMakeFiles/main.dir
-/home/tum/Projects/Plush/build/CMakeFiles/edit_cache.dir
-/home/tum/Projects/Plush/build/CMakeFiles/rebuild_cache.dir

@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/main.dir/src/main.c.o CMakeFiles/main.dir/src/shell.c.o CMakeFiles/main.dir/src/config/ApplyInit.c.o CMakeFiles/main.dir/src/config/CheckConfigFile.c.o CMakeFiles/main.dir/src/history/History.c.o CMakeFiles/main.dir/src/config/ExistsInConfig.c.o -o main  /usr/lib64/liblua5.4.so -lm -ldl -lm
