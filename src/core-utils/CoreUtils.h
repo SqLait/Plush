@@ -1,6 +1,6 @@
-#include <luajit-5_1-2.1/luajit.h>
-#include <luajit-5_1-2.1/lualib.h>
-#include <luajit-5_1-2.1/lauxlib.h>
+#include <luajit-2.1/luajit.h>
+#include <luajit-2.1/lualib.h>
+#include <luajit-2.1/lauxlib.h>
 
 #define EXPOSE_CORE_UTILS_H
 #ifdef EXPOSE_CORE_UTILS_H
