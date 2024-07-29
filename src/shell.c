@@ -8,24 +8,41 @@
 #include "constants.h"
 #include "config/ApplyInit.h"
 #include "history/History.h"
-
-
-void ExecuteCommand(char**);
-void ChangeDir(char*);
+#include "shell.h"
 
 void Loop() {
   char input[MAX_INPUT_SIZE];
   char *args[MAX_TOKENS];
-  char *token;
+  int position = 0;
   int should_run = 1;
 
   while (should_run) {
     printf("%s", ps1);
-    int position = 0;
-    fgets(input, MAX_INPUT_SIZE, stdin);
-    WriteInHistory(input);
-    token = strtok(input, DELIM);
+    fflush(stdout);
 
+    memset(input, 0, MAX_INPUT_SIZE);
+    position = 0;
+
+    int ch;
+    while ((ch = getchar()) != EOF && ch != '\n') {
+      if (position < MAX_INPUT_SIZE - 1) {
+        input[position++] = (char)ch;
+      } else {
+        fprintf(stderr, "Input too long\n");
+        while ((ch = getchar()) != EOF && ch != '\n');
+        break;
+      }
+    }
+    input[position] = '\0';
+
+    if (position == 0) {
+      continue;
+    }
+
+    WriteInHistory(input);
+
+    position = 0;
+    char *token = strtok(input, DELIM);
     while (token != NULL) {
       args[position] = token;
       position++;
@@ -45,6 +62,7 @@ void Loop() {
     }
   }
 }
+
 
 void ExecuteCommand(char** args) {
   pid_t pid = fork();
