@@ -36,5 +36,12 @@ target_link_libraries(main
 )
 
 # Include LuaJIT headers
-target_include_directories(main PRIVATE ${LUAJIT_INCLUDE_DIRS})
+target_include_directories(main PRIVATE
+    ${LUAJIT_INCLUDE_DIRS}
+    /usr/include/luajit-2.1  # Common path for LuaJIT headers
+    /usr/include/luajit-5_1-2.1  # OpenSUSE specific path
+)
+
+# Add the preprocessor definitions to account for different include paths
+add_definitions(-DUSING_LUAJIT)
 
