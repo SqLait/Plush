@@ -66,7 +66,6 @@ int CheckConfigStatus() {
       return 1;
     }
   } else {
-    printf("Config file detected in ~/.config/plush.\n");
     ApplyInit();
   }
   free(path);
