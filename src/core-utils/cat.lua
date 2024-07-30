@@ -1,4 +1,6 @@
-Show_all = function(file)
+local cat = {}
+
+cat.Show_all = function(file)
   for line in io.lines(file) do
     line = line:gsub("[^\32-\126\10\13\9]", function(c)
       return string.format("^%c", c:byte() + 64)
@@ -8,7 +10,7 @@ Show_all = function(file)
   end
 end
 
-Number = function(file)
+cat.Number = function(file)
   local count = 1
   for line in io.lines(file) do
     print(string.format("%6d  %s", count, line))
@@ -16,7 +18,7 @@ Number = function(file)
   end
 end
 
-Number_no_blank = function(file)
+cat.Number_no_blank = function(file)
   local count = 1
   for line in io.lines(file) do
     if line ~= "" then
@@ -28,26 +30,26 @@ Number_no_blank = function(file)
   end
 end
 
-Show_ends = function(file)
+cat.Show_ends = function(file)
   for line in io.lines(file) do
     print(line .. "$")
   end
 end
 
-Show_tabs = function(file)
+cat.Show_tabs = function(file)
   for line in io.lines(file) do
     line = line:gsub("\t", "^I")
     print(line)
   end
 end
 
-Main = function(file, flag)
+cat.Main = function(file, flag)
   local flags = {
-    ["-A"] = Show_all,
-    ["-n"] = Number,
-    ["-E"] = Show_ends,
-    ["-b"] = Number_no_blank,
-    ["-T"] = Show_tabs
+    ["-A"] = cat.Show_all,
+    ["-n"] = cat.Number,
+    ["-E"] = cat.Show_ends,
+    ["-b"] = cat.Number_no_blank,
+    ["-T"] = cat.Show_tabs
   }
   if flags[flag] then
     flags[flag](file)
@@ -60,7 +62,7 @@ local file = arg[1]
 local flag = arg[2]
 
 if file and flag then
-  Main(file, flag)
+  cat.Main(file, flag)
 else
   print("Usage: lua script.lua <file> <flag>")
   print("Flags:")
@@ -69,3 +71,4 @@ else
   print("  -E = Show_ends")
 end
 
+return cat

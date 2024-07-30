@@ -2,6 +2,7 @@
 #include <luajit-5_1-2.1/lualib.h>
 #include <luajit-5_1-2.1/lauxlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "CheckConfigFile.h"
 #include "ApplyInit.h"
@@ -14,6 +15,7 @@ int ApplyInit() {
   luaL_openlibs(L);
 
   RegisterPlush(L);  // Register C functions
+  RegisterCoreUtils(L);
 
   if (luaL_loadfile(L, path) || lua_pcall(L, 0, 0, 0)) {
     printf("Cannot run init.lua: %s\n", lua_tostring(L, -1));
@@ -39,4 +41,9 @@ int SetPrompt(lua_State* L) {
 void RegisterPlush(lua_State* L) {
   luaL_newlib(L, Plush);  // Create a new library
   lua_setglobal(L, "Plush");  // Set the library as a global variable
+}
+
+void RegisterCoreUtils(lua_State* L) {
+  luaL_newlib(L, Utils);  // Create a new library
+  lua_setglobal(L, "Utils");  // Set the library as a global variable
 }

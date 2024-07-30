@@ -2,6 +2,8 @@
 #include <luajit-5_1-2.1/lualib.h>
 #include <luajit-5_1-2.1/lauxlib.h>
 
+#include "../core-utils/core.h"
+
 #define APPLY_INIT_H
 #ifdef APPLY_INIT_H
 
@@ -14,8 +16,14 @@ extern char* path;
 int ApplyInit();
 int SetPrompt(lua_State* L);
 void RegisterPlush(lua_State* L);
+void RegisterCoreUtils(lua_State* L);
 
 static const struct luaL_Reg Plush[] = {
+  {"SetPrompt", SetPrompt},
+  {NULL, NULL}
+};
+
+static const struct luaL_Reg Utils[] = {
   {"SetPrompt", SetPrompt},
   {NULL, NULL}
 };
