@@ -36,6 +36,4 @@ if [ ! -f main ]; then
     exit 1
 fi
 
-./main
-
 #Very plain and simple script to compile everything easier. Saves me around 7 seconds :D

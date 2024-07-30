@@ -60,7 +60,7 @@ int WriteInHistory(const char* command) {
     return 1;
   }
 
-  fprintf(file, "%s", command);
+  fprintf(file, "%s\n", command);
   fclose(file);
 
   free(hsPath);
