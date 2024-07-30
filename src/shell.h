@@ -1,7 +1,9 @@
 #define SHELL_H
 #ifdef SHELL_H
 
-void Loop();
-void ExecuteCommand(char**);
-void ChangeDir(char*);
+int Loop();
+static void ExecuteCommand(char**);
+static void ChangeDir(char*);
+static void BuiltInCommand(char**);
+static void Tokenizer(char**, char*, int);
 #endif

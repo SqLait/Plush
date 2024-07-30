@@ -1,0 +1,41 @@
+#!/bin/bash
+
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+if ! command_exists cmake; then
+    echo "Error: cmake is not installed. Please install cmake and try again."
+    exit 1
+fi
+
+if ! command_exists make; then
+    echo "Error: make is not installed. Please install make and try again."
+    exit 1
+fi
+
+if [ ! -d build ]; then
+    echo "Build directory does not exist. Creating the directory..."
+    mkdir build
+fi
+
+cd build || { echo "Failed to change directory to build. Exiting."; exit 1; }
+
+if ! cmake ..; then
+    echo "cmake configuration failed. Please check the output for errors."
+    exit 1
+fi
+
+if ! cmake --build .; then
+    echo "Build failed. Please check the output for errors."
+    exit 1
+fi
+
+if [ ! -f main ]; then
+    echo "Error: Executable 'main' not found. Build might have failed."
+    exit 1
+fi
+
+./main
+
+#Very plain and simple script to compile everything easier. Saves me around 7 seconds :D

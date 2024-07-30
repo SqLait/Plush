@@ -10,11 +10,12 @@
 #include "history/History.h"
 #include "shell.h"
 
-void Loop() {
+int should_run = 1;
+
+int Loop() {
   char input[MAX_INPUT_SIZE];
   char *args[MAX_TOKENS];
   int position = 0;
-  int should_run = 1;
 
   while (should_run) {
     printf("%s", ps1);
@@ -35,36 +36,43 @@ void Loop() {
     }
     input[position] = '\0';
 
-    if (position == 0) {
+    if (position == 0)
       continue;
-    }
 
     WriteInHistory(input);
 
     position = 0;
-    char *token = strtok(input, DELIM);
-    while (token != NULL) {
-      args[position] = token;
-      position++;
-      token = strtok(NULL, DELIM);
-    }
-    args[position] = NULL;
+    Tokenizer(args, input, position);
+    BuiltInCommand(args);
+  }
+  return 0;
+}
 
-    // Check for built-in commands
-    if (args[0] != NULL) {
-      if (strcmp(args[0], "cd") == 0) {
-        ChangeDir(args[1]);
-      } else if (strcmp(args[0], "exit") == 0) {
-        should_run = 0;
-      } else {
-        ExecuteCommand(args);
-      }
+static void Tokenizer(char** args, char input[MAX_INPUT_SIZE], int pos) {
+  char *token = strtok(input, DELIM);
+  while (token != NULL) {
+    args[pos] = token;
+    pos++;
+    token = strtok(NULL, DELIM);
+  }
+  args[pos] = NULL;
+}
+
+static void BuiltInCommand(char** args) {
+  // Check for built-in commands
+  if (args[0] != NULL) {
+    if (strcmp(args[0], "cd") == 0) {
+      ChangeDir(args[1]);
+    } else if (strcmp(args[0], "exit") == 0) {
+      should_run = 0;
+    } else {
+      ExecuteCommand(args);
     }
   }
 }
 
 
-void ExecuteCommand(char** args) {
+static void ExecuteCommand(char** args) {
   pid_t pid = fork();
   if (pid == 0) {
     // Child process
@@ -81,7 +89,7 @@ void ExecuteCommand(char** args) {
   }
 }
 
-void ChangeDir(char* path) {
+static void ChangeDir(char* path) {
   if (path == NULL) {
     char *homeDir = getenv("HOME") ? getenv("HOME") : ".";
     ChangeDir(homeDir);

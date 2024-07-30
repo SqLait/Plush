@@ -37,10 +37,6 @@ fast and powerfull it seems like a no brainer to use it in a shell that does not
 
 All customization can be done in the init.lua file.
 
-# > [!IMPORTANT]
-A lot of the the shells functionality comes from the gnu core utils. This is not really a problem but it makes the shell platform dependent.
-Because of that in the future contributers (probs only me) will try to rewrite the core utils in a mix of C and lua to achieve the ultimate goal
-of 100% cross platform code. 
-
-Because of the sheer ambitions of this project I would love for people to contribute to the project. Your help can greatly speed up the development
-of this project, and even bring fresh new idea's to the table.
+# > IMPORTANT
+Because of the sheer determination of this project things will take longer. For example getting lua extendability with the core utils to work. Or writing your own shell
+libs can be a lot of work. Therefore this project will not be finished for a long time.

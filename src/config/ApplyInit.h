@@ -13,10 +13,11 @@ extern char ps1[PROMPT_SIZE];
 extern int silenceInit;
 extern char* path;
 
+static void RegisterPlush(lua_State* L);
+static void RegisterCoreUtils(lua_State* L);
+
 int ApplyInit();
 int SetPrompt(lua_State* L);
-void RegisterPlush(lua_State* L);
-void RegisterCoreUtils(lua_State* L);
 
 static const struct luaL_Reg Plush[] = {
   {"SetPrompt", SetPrompt},

@@ -38,12 +38,12 @@ int SetPrompt(lua_State* L) {
   return 0;
 }
 
-void RegisterPlush(lua_State* L) {
+static void RegisterPlush(lua_State* L) {
   luaL_newlib(L, Plush);  // Create a new library
   lua_setglobal(L, "Plush");  // Set the library as a global variable
 }
 
-void RegisterCoreUtils(lua_State* L) {
+static void RegisterCoreUtils(lua_State* L) {
   luaL_newlib(L, Utils);  // Create a new library
   lua_setglobal(L, "Utils");  // Set the library as a global variable
 }
