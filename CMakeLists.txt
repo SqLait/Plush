@@ -24,6 +24,7 @@ add_executable(main
     src/config/CheckConfigFile.c
     src/history/History.c
     src/config/ExistsInConfig.c
+    src/def-plugins/tab-completion/tabcomplete.c
 )
 
 # Link libraries
