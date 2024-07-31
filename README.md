@@ -40,3 +40,5 @@ All customization can be done in the init.lua file.
 # > IMPORTANT
 Because of the sheer determination of this project things will take longer. For example getting lua extendability with the core utils to work. Or writing your own shell
 libs can be a lot of work. Therefore this project will not be finished for a long time.
+
+Bugs can and will be very common. I will fix them as soon as I can but I can't always fix them asap.
