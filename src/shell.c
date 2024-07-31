@@ -36,13 +36,14 @@ int Loop() {
     WriteInHistory(input);
 
     TokenizeInput(args, input);
-    ExecuteCommandLoop(args);
+    BuiltInCommand(args);
   }
 
   ResetTermios(&oldt);
   return 0;
 }
 
+/*Will handle input detected while typing commands*/
 static void HandleInput(char* input, int* position) {
   int ch;
   while ((ch = getchar()) != EOF && ch != '\n') {
@@ -67,6 +68,7 @@ static void HandleInput(char* input, int* position) {
   input[*position] = '\0';
 }
 
+/*Termios does not work with backspace. This is the quick fix to that*/
 static void HandleBackspace(int* position) {
   if (*position > 0) {
     (*position)--;
@@ -74,6 +76,7 @@ static void HandleBackspace(int* position) {
   }
 }
 
+/*Initialize a old and new terminal for the dynamic input checking*/
 static void InitTermios(struct termios* oldt, struct termios* newt) {
   tcgetattr(STDIN_FILENO, oldt);
   *newt = *oldt;
@@ -81,10 +84,12 @@ static void InitTermios(struct termios* oldt, struct termios* newt) {
   tcsetattr(STDIN_FILENO, TCSANOW, newt);
 }
 
+/*Will reset termios when the shell is ending*/
 static void ResetTermios(struct termios* oldt) {
   tcsetattr(STDIN_FILENO, TCSANOW, oldt);
 }
 
+/*Split the text up into multiple commands*/
 static void TokenizeInput(char** args, char* input) {
   int pos = 0;
   char *token = strtok(input, DELIM);
@@ -96,6 +101,8 @@ static void TokenizeInput(char** args, char* input) {
   args[pos] = NULL;
 }
 
+/*Handles things like cd and other commands you might
+ * want to extend in this shell*/
 static void BuiltInCommand(char** args) {
   if (args[0] != NULL) {
     if (strcmp(args[0], "cd") == 0) {
@@ -108,18 +115,7 @@ static void BuiltInCommand(char** args) {
   }
 }
 
-static void ExecuteCommandLoop(char** args) {
-  if (args[0] != NULL) {
-    if (strcmp(args[0], "cd") == 0) {
-      ChangeDir(args[1]);
-    } else if (strcmp(args[0], "exit") == 0) {
-      should_run = 0;
-    } else {
-      ExecuteCommand(args);
-    }
-  }
-}
-
+/*Creates a fork proccess of the command you entered*/
 static void ExecuteCommand(char** args) {
   pid_t pid = fork();
 
@@ -135,6 +131,7 @@ static void ExecuteCommand(char** args) {
   }
 }
 
+/*Extend the use case of the cd command*/
 static void ChangeDir(char* path) {
   if (path == NULL) {
     char *homeDir = getenv("HOME") ? getenv("HOME") : ".";
