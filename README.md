@@ -1,3 +1,9 @@
+# PROJECT ON HALT
+Due to me having to dedicate a lot of time into other projects (Game Engine in MonoGame) it is not very likely I will continue with this project for the foreseeable future.
+Once I have more time I will probably rewrite this from scratch again since there is a lot of code i'm not happy with.
+
+Feel free to contribute to the code if you see fit.
+
 # Pleasant Lua User Shell
 
 Plush is project that aims to make powerfull shell with the looks, that does not compromise on performance.
